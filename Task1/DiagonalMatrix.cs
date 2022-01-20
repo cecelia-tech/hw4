@@ -2,13 +2,21 @@
 
 namespace Task1
 {
+    public class UndoArgs : EventArgs
+    {
+        public int I { get; set; }
+        public int J { get; set; }
+        public dynamic OldValue { get; set; }
+        public dynamic NewValue { get; set; }
+    }
+
     public class DiagonalMatrix<T>
     {
-        public delegate void ElementChanged(int iIndexer, int jIndexer, T oldValue, T newValue);
+        //public delegate void ElementChanged(int iIndexer, int jIndexer, T oldValue, T newValue);
 
-        public event ElementChanged ElementChangedHandler; // this one will save subscribed elements
+        public event EventHandler<UndoArgs> ElementChangedHandler; // this one will save subscribed elements
 
-
+        public UndoArgs undoArgs;
 
         internal T[] DiagonalNumbers { get; }
         public int Size { get; }
@@ -59,9 +67,19 @@ namespace Task1
                 else if (i == j)
                 {
                     dynamic oldValue = DiagonalNumbers[i], newValue = value;
+
                     if (oldValue != newValue)
                     {
-                        ElementChangedHandler?.Invoke(i, j, oldValue, newValue);
+                        UndoArgs undoArgs1 = new UndoArgs();
+
+                        undoArgs1.I = i;
+                        undoArgs1.J = j;
+                        undoArgs1.OldValue = oldValue;
+                        undoArgs1.NewValue = newValue;
+
+                        undoArgs = undoArgs1;
+
+                        ElementChangedHandler?.Invoke(this,undoArgs);
                     }
                     else
                     {
@@ -71,9 +89,9 @@ namespace Task1
             }
         }
 
-       public void Anouncement(int i, int j, T oldValue, T newValue)
+       public void Anouncement(object sender, UndoArgs e)
         {
-            Console.WriteLine($"Element at [{i}, {j}] has been changed from {oldValue} to {newValue}");
+            Console.WriteLine($"Element at [{e.I}, {e.J}] has been changed from {e.OldValue} to {e.NewValue}");
         }
     }
 }

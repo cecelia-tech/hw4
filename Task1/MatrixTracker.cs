@@ -13,7 +13,16 @@ namespace Task1
 
         public void Undo()
         {
-            DiagonalMatrix<T>.
+            if (MatrixReceived.undoArgs != null)
+            {
+                MatrixReceived[MatrixReceived.undoArgs.I, MatrixReceived.undoArgs.J] =
+                    MatrixReceived.undoArgs.OldValue;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+            
         }
     }
 }

@@ -21,6 +21,13 @@ namespace Task1
             intMatrix1[0, 0] = 11;
             intMatrix1[1, 1] = 22;
             intMatrix1[2, 2] = 33;
+
+            intMatrix2[0, 0] = 11;
+
+            matrixTracker.Undo();
+
+            Console.WriteLine(intMatrix1[2, 2]);
+
         }
     }
 }
