@@ -5,9 +5,10 @@ namespace Task1
     {
         public DiagonalMatrix<T> MatrixReceived { get; }
         
-        public MatrixTracker(DiagonalMatrix<T> matrix)
+        public MatrixTracker(DiagonalMatrix<T> diagonalMatrix)
         {
-            MatrixReceived = matrix;
+            MatrixReceived = diagonalMatrix;
+            //here we subscribe to the event
             MatrixReceived.ElementChangedHandler += MatrixReceived.Anouncement;
         }
 
@@ -15,7 +16,7 @@ namespace Task1
         {
             if (MatrixReceived.undoArgs != null)
             {
-                MatrixReceived[MatrixReceived.undoArgs.I, MatrixReceived.undoArgs.J] =
+                MatrixReceived[MatrixReceived.undoArgs.I, MatrixReceived.undoArgs.I] =
                     MatrixReceived.undoArgs.OldValue;
             }
             else
